@@ -108,4 +108,6 @@ public class UserServiceTest {
         assertEquals(user.getPassword(), "Hashed_password");
         assertNotEquals(user.getPassword(), "pass123");
     }   
+
+    
 }
