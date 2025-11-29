@@ -44,7 +44,7 @@ public class UserService {
         String hashedPwd = service.Hash(password);
 
         if (existing.getPassword() != hashedPwd) {
-            return null;
+            throw new IllegalArgumentException("Incorrect Password");
         }
         return existing;
 
