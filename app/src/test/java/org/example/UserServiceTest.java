@@ -4,6 +4,8 @@ import org.junit.Test;
 import org.example.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class UserServiceTest {
@@ -22,5 +24,20 @@ public class UserServiceTest {
         assertEquals("Bob", create.getUsername());
 
         verify(repo).saveUser(any(User.class));
+    }
+
+    @Test
+    public void createUser_ShouldThrowException_WhenUsernameTaken(){
+        UserRepo repo = mock(UserRepo.class);
+        UserService service = new UserService(repo);
+        PasswordRepo pwdRepo = mock(PasswordRepo.class);
+
+        when(repo.findByUsername("alice")).thenReturn(new User("alice", "whatever", pwdRepo));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            service.createUser("alice", "pass123", pwdRepo);
+        });
+
+        verify(repo, never()).saveUser(any()); // verify that the user never gets saved.
     }
 }
