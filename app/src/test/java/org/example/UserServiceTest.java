@@ -168,13 +168,28 @@ public class UserServiceTest {
         UserService service = new UserService(repo, encryptionService);
         PasswordRepo pwdRepo = mock(PasswordRepo.class);
 
-        User expected_user = new User("alice", "Hashed_password", pwdRepo);
-
         when(encryptionService.Hash("pass123")).thenReturn("Hashed_password");
         when(repo.findByUsername("alice")).thenReturn(null);
 
         assertThrows(NoSuchElementException.class, ()->{
             service.Login("alice", "pass123");
+        });
+
+    }
+
+    @Test
+    public void loginShouldThrowException_WhenPasswordIsWrong() {
+        UserRepo repo = mock(UserRepo.class);
+        EncryptionService encryptionService = mock(EncryptionService.class);
+        UserService service = new UserService(repo, encryptionService);
+        PasswordRepo pwdRepo = mock(PasswordRepo.class);
+
+        User expected_user = new User("alice", "Hashed_password", pwdRepo);
+        when(encryptionService.Hash("pas123")).thenReturn("Hased_password");
+        when(repo.findByUsername("alice")).thenReturn(expected_user);
+
+        assertThrows(IllegalArgumentException.class, ()-> {
+            service.Login("alice", "pas123");
         });
 
     }
