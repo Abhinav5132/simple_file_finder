@@ -51,4 +51,11 @@ public class UserRepoTest {
         User found_user = repo.findByUsername("alice");
         assertEquals(user, found_user);
     }
+
+    @Test
+    public void findByUsername_ShouldReturnNull_WhenNotExists() {
+        UserRepo repo = new UserRepo();
+        User found_user = repo.findByUsername("alice");
+        assertEquals(null, found_user);
+    }
 }
