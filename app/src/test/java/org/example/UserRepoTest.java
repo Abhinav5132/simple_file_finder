@@ -28,4 +28,16 @@ public class UserRepoTest {
             repo.saveUser(null);
         });
     }
+
+    @Test
+    public void saveUserShouldThrowIfUserDuplicate(){
+        UserRepo repo = new UserRepo();
+        PasswordRepo pwdRepo = mock(PasswordRepo.class);
+        User user = new User("alice", "pass1234", pwdRepo);
+        repo.saveUser(user);
+
+        assertThrows(IllegalArgumentException.class, ()->{
+            repo.saveUser(user);
+        });
+    }
 }
