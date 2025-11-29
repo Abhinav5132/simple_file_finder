@@ -29,7 +29,20 @@ public class UserService {
     }
 
     public User Login(String username, String password) {
-        return null;
+        if (username.isEmpty()){
+            throw new IllegalArgumentException("Username cannot be empty");
+        }
+        if (password.isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be empty");
+        }
+        User existing = repo.findByUsername(username);
+        String hashedPwd = service.Hash(password);
+
+        if (existing.getPassword() != hashedPwd) {
+            return null;
+        }
+        return existing;
+
     }
     
 }
