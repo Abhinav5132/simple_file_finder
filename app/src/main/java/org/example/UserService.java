@@ -8,6 +8,9 @@ public class UserService {
     }
 
     public User createUser(String Username, String Password, PasswordRepo pwdRepo){
+        if (Username.isEmpty()){
+            throw new IllegalArgumentException("Username cannot be empty");
+        }
         if (Password.isEmpty()) {
             throw new IllegalArgumentException("Password cannot be empty");
         }
