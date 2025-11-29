@@ -21,7 +21,9 @@ public class UserService {
             throw new IllegalArgumentException("Username Taken");
         }
 
-        User user = new User(Username, Password, pwdRepo);
+        String hashedPwd = service.Hash(Password);
+
+        User user = new User(Username, hashedPwd, pwdRepo);
         repo.saveUser(user);
         return user;
     }
