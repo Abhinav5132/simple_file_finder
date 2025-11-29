@@ -1,6 +1,7 @@
 package org.example;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 
 import org.junit.Test;
@@ -17,5 +18,14 @@ public class UserRepoTest {
         repo.saveUser(user);
 
         assertEquals(1, repo.count());
+    }
+
+    @Test
+    public void saveUserShouldThrowIfUserIsNull(){
+        UserRepo repo = new UserRepo();
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            repo.saveUser(null);
+        });
     }
 }
