@@ -2,6 +2,8 @@ package org.example;
 
 import java.util.NoSuchElementException;
 
+// TODO: implement logout
+// TODO: also needs to have  save to file
 public class UserService {
     private final UserRepo repo;
     private final EncryptionService service;
