@@ -109,5 +109,53 @@ public class UserServiceTest {
         assertNotEquals(user.getPassword(), "pass123");
     }   
 
-    
+    @Test
+    public void loginShouldReturnUser_WhenCredentialsMatch() {
+        UserRepo repo = mock(UserRepo.class);
+        EncryptionService encryptionService = mock(EncryptionService.class);
+        UserService service = new UserService(repo, encryptionService);
+        PasswordRepo pwdRepo = mock(PasswordRepo.class);
+
+        User expected_user = new User("alice", "Hashed_password", pwdRepo);
+
+        when(encryptionService.Hash("pass123")).thenReturn("Hashed_password");
+        when(repo.findByUsername("alice")).thenReturn(expected_user);
+
+        User user = service.Login("alice", "pass123");
+
+        assertEquals(expected_user, user);
+    }
+
+    @Test
+    public void loginPasswordEmptyShouldThrowAnException(){
+        UserRepo repo = mock(UserRepo.class);
+        EncryptionService encryptionService = mock(EncryptionService.class);
+        UserService service = new UserService(repo, encryptionService);
+        PasswordRepo pwdRepo = mock(PasswordRepo.class);
+
+        User expected_user = new User("alice", "Hashed_password", pwdRepo);
+        when(encryptionService.Hash("pass123")).thenReturn("Hashed_password");
+        when(repo.findByUsername("alice")).thenReturn(expected_user);
+
+
+        assertThrows(IllegalArgumentException.class, ()->{
+            service.Login("alice", "");
+        });
+    }
+
+    @Test 
+    public void loginUsernameEmptyShouldThrowAnException() {
+        UserRepo repo = mock(UserRepo.class);
+        EncryptionService encryptionService = mock(EncryptionService.class);
+        UserService service = new UserService(repo, encryptionService);
+        PasswordRepo pwdRepo = mock(PasswordRepo.class);
+
+        User expected_user = new User("alice", "Hashed_password", pwdRepo);
+        when(encryptionService.Hash("pass123")).thenReturn("Hashed_password");
+        when(repo.findByUsername("alice")).thenReturn(expected_user);
+        
+        assertThrows(IllegalArgumentException.class, () ->
+            service.Login("", "pass123")
+        );
+    }
 }
