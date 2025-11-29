@@ -16,8 +16,15 @@ public class UserRepo {
         }
         users.add(user);
     }
+
     public User findByUsername(String Username) {
-        return null;
+        User user_s = null;
+        for (User user: users) {
+            if (user.getUsername().equals(Username)) {
+                user_s = user;
+            }
+        }
+        return user_s;
     }
 
     public int count() {
